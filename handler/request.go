@@ -16,10 +16,6 @@ type CreateOpeningRequest struct {
 }
 
 func (r *CreateOpeningRequest) Validate() error {
-    if r == nil {
-        return fmt.Errorf("malformed request body")
-    }
-
     if r.Role == "" {
         return errParamIsRequired("role", "string")
     }
@@ -45,4 +41,22 @@ func (r *CreateOpeningRequest) Validate() error {
     }
 
     return nil
+}
+
+type UpdateOpeningRequest struct {
+    Role string `json:"role"`
+    Company string `json:"company"`
+    Location string `json:"location"`
+    Remote *bool `json:"remote"`
+    Link string `json:"link"`
+    Salary int64 `json:"salary"`
+}
+
+func (r *UpdateOpeningRequest) Validate() error {
+
+    if r.Role != "" || r.Company != "" || r.Location != "" || r.Remote != nil || r.Salary > 0 || r.Link != "" {
+        return nil
+    }
+
+    return fmt.Errorf("at least one valid field is must be provided")
 }
